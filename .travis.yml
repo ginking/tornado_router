@@ -1,0 +1,16 @@
+language python
+
+python:
+- "3.4"
+- "3.5"
+
+install
+- pip install --upgrade setuptools
+- pip install --upgrade pip wheel
+- pip install tornado
+- python setup.py develop
+
+script:
+    nosetests
+
+sudo: false

@@ -5,23 +5,16 @@ import tornado.httpserver
 router = tornado_router.Router(base_handler=tornado_router.BaseHandler)
 
 
-@router.route(method='post', url='/')
+@router.route(method='get', url='/')
 def index(handler):
-    print('hello')
-    handler.write('hello')
+    handler.write('hello tornado!')
 
-
-class MainHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.write('hello')
 
 def main():
 
-    print(router.handlers[0][1])
-    #print(router.requests)
+    print(router.requests)
 
-    handlers = [(r"/", MainHandler)]
-    app = tornado.web.Application(handlers)
+    app = tornado.web.Application(router.handlers)
     app.listen(9000)
     tornado.ioloop.IOLoop.current().start()
 
