@@ -18,3 +18,7 @@ Take a look at demo.
 
 The tornado_router is offered under MIT license.
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/shicky/tornado_router/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
