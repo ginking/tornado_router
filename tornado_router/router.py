@@ -46,18 +46,15 @@ class Router():
         @tornado.gen.coroutine
         def json_request(handler):
             # todo: there's no need to prepare dict input??
-            resp = {'success': True}
             try:
-                resp = yield f(handler, resp)
+                resp = yield f(handler)
+                handler.set_header('Content-Type', 'application/json')
+                handler.write(tornado.escape.json_encode(resp))
             except Exception as e:
+                raise tornado.web.HTTPError(500, str(e))
                 # todo: raise HTTPError
-                handler.logger.warn(str(e) + '\n' + repr(traceback.format_stack()))
-                traceback.print_exc()
-                resp['success'] = False
-                resp['msg'] = str(e)
-            handler.set_header('Content-Type', 'application/json')
-            handler.write(tornado.escape.json_encode(resp))
-
+                #handler.logger.warn(str(e) + '\n' + repr(traceback.format_stack()))
+                #traceback.print_exc()
         return json_request
 
     # route
