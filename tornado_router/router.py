@@ -12,10 +12,12 @@ logger = logging.getLogger(__name__)
 
 class Router():
 
-    def __init__(self, base_handler):
+    def __init__(self, base_handler, redirect=True):
         self._handlers = []
         self._requests = []
         self._base_handler = base_handler
+        # redirect if true, not return redirect_url
+        self._redirect = redirect
 
     @property
     def handlers(self):
@@ -32,9 +34,14 @@ class Router():
         def auth_request(handler):
             user = yield handler.get_cur_user()
             if not user:
-                handler.redirect(
-                    handler.get_login_url() + '?referrer=' +
-                    str(base64.b64encode(handler.request.uri.encode('ascii')))[2:-1])
+                redirect_url = handler.get_login_url() + '?referrer=' + str(base64.b64encode(handler.request.uri.encode('ascii')))[2:-1]
+                if self._redirect:
+                    # redirect
+                    handler.redirect(redirect_url)
+                else:
+                    # return json response
+                    handler.set_header('Content-Type', 'application/json')
+                    handler.write(tornado.escape.json_encode({'redirect': redirect_url}))
                 return
             yield f(handler)
 
