@@ -14,7 +14,7 @@ def read_version():
             match = regexp.match(line)
             if match is not None:
                 return match.group(1)
-        raise RuntimeError('Cannot find version in aio_periodic_task/__init__.py')
+        raise RuntimeError('Cannot find version in tornado_router/__init__.py')
 
 classifiers = [
     'License :: OSI Approved :: MIT License',
