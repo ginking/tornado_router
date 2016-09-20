@@ -65,7 +65,9 @@ class Router():
         return json_request
 
     # route
-    def route(self, method='get', url=None, auth=False, json=False):
+    def route(self, method='get', url=None, auth=False, json=False, xsrf=True):
+
+        # self.application.settings.get("xsrf_cookies")
 
         if method.upper() not in tornado.web.RequestHandler.SUPPORTED_METHODS:
             raise ValueError('invalid HTTP method {} found! tornado only supports HTTP methods in {}'.format(
@@ -83,6 +85,9 @@ class Router():
             req = self._auth_wrap(req) if auth else req
 
             setattr(InnerHandler, method.lower(), req)
+
+            if not xsrf:
+                setattr(InnerHandler, "check_xsrf_cookie", lambda self: None)
 
             InnerHandler.logger = logging.getLogger(f.__name__)
 

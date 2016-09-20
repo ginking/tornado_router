@@ -50,9 +50,14 @@ Please click on **Star** if you like this library =)
 @router.route(url="index")
 ```
 
-* All Methods supported
+* Different HTTP Methods supported (GET, HEAD, POST, DELETE, PATCH, PUT, OPTIONS)
 ```python
-@router.route(url="post")
+@router.route(method="post")
+```
+
+* Disable XSRF validation
+```python
+@router.route(xsrf=False)
 ```
 
 # Usage
